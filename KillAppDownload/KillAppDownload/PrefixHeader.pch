@@ -1,0 +1,22 @@
+//
+//  PrefixHeader.pch
+//  KillAppDownload
+//
+//  Created by 赵广亮 on 16/7/29.
+//  Copyright © 2016年 zhaoguangliang. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#define k_ScreenWidth [UIScreen mainScreen].bounds.size.width
+#define k_ScreenHeight [UIScreen mainScreen].bounds.size.height
+#define k_DownloadURLStr @"http://oarbi0614.bkt.clouddn.com/%E5%86%B0%E6%B2%B3%E4%B8%96%E7%BA%AA.mp4"
+
+#import "LLProgressView.h"
+#import "EasyAVPlayer.h"
+#import "Modifier_Singleton.h"
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
