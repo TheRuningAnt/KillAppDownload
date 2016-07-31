@@ -30,6 +30,7 @@
 
 #pragma mark 调用方法
 -(void)setUp{
+    self.view.backgroundColor = [UIColor cyanColor];
     [self.view addSubview:self.progressView];
 }
 

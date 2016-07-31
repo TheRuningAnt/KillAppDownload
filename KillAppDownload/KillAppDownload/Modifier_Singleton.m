@@ -108,24 +108,25 @@ static Modifier_Singleton *modify_Singleton = nil;
 
         //获取需要重新下载的文件名
         NSDictionary *listDic = [NSDictionary dictionaryWithContentsOfURL:moviePlistUrl];
-        NSString *key = nil;
-        for(NSString *str in listDic.allKeys){
-            if ([listDic valueForKey:str]) {
-                key = str;
-                break;
+        __block NSString *cacheName = nil;
+        [listDic enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            if ([obj isEqualToString:@"NO"]) {
+                cacheName = key;
+                *stop = YES;
             }
-        }
+        }];
+        
         
         //返回需要下载的数据
         NSData *data = nil;
-        if (key) {
+        if (cacheName) {
             //caches文件下目录
             NSURL *cacheTmpUrl = [NSURL fileURLWithPath:paths[0]];
-            cacheTmpUrl = [cacheTmpUrl URLByAppendingPathComponent:key];
+            cacheTmpUrl = [cacheTmpUrl URLByAppendingPathComponent:cacheName];
             
             //tmp文件目录
             NSString *tmpContent = NSTemporaryDirectory();
-            NSString *tmpStr = [NSString stringWithFormat:@"%@%@",tmpContent,key];
+            NSString *tmpStr = [NSString stringWithFormat:@"%@%@",tmpContent,cacheName];
             NSURL *tmpSaveUrl = [NSURL fileURLWithPath:tmpStr];
             
             //将缓存文件拷贝至tmp目录下
@@ -137,7 +138,7 @@ static Modifier_Singleton *modify_Singleton = nil;
             if([manager copyItemAtURL:cacheTmpUrl toURL:tmpSaveUrl error:&error]){
                 //获取resumeData文件
                 NSURL *resumeDatUrl = [NSURL fileURLWithPath:paths[0]];
-                resumeDatUrl = [resumeDatUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"Resume_%@",key]];
+                resumeDatUrl = [resumeDatUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"Resume_%@",cacheName]];
                 data = [NSData dataWithContentsOfURL:resumeDatUrl];
             }else{
                 NSLog(@"拷贝文件失败  %s error = %@",__FUNCTION__,error);
